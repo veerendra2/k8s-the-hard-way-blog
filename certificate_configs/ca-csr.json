@@ -1,0 +1,16 @@
+{
+  "CN": "Kubernetes",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "Westeros",
+      "L": "The North",
+      "O": "House Stark",
+      "OU": "CA",
+      "ST": "Winterfell"
+    }
+  ]
+}

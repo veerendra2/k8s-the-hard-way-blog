@@ -1,0 +1,37 @@
+10.200.1.10 - m1
+10.200.1.11 - m2
+10.200.1.12 - n1
+10.200.1.13 - n2
+
+10.200.1.15 - proxy
+
+POD Subnet(cluster-cidr)  - 10.100.0.0/16
+K8s Service Subnet(service-cluster-ip)	  - 10.32.0.0/24
+
+
+Ref. Links
+==========
+https://developer.ibm.com/recipes/tutorials/bridge-the-docker-containers-to-external-network/
+https://docs.docker.com/config/containers/container-networking/
+sudo docker network create --driver=bridge --ip-range=10.200.1.0/24 --subnet=10.200.1.0/24 -o "com.docker.network.bridge.name=br0" br0
+
+docker run -it -d -p 80:6443 -h proxy --net br0 --ip 10.200.1.15 nginx-proxy
+
+Because of subnet collision, had to remove default docker bridge "docker0".
+sudo ip set link docker0 down
+sudo brctl delbr docker0
+
+FLANEL NETWORK Troubleshooting Guide = https://coreos.com/flannel/docs/latest/kubernetes.html
+
+Enable systemd-resolved daemon
+systemctl status systemd-resolved
+
+{
+  "bip": "192.168.1.5/24",
+  "fixed-cidr": "192.168.1.5/25",
+  "fixed-cidr-v6": "2001:db8::/64",
+  "mtu": 1500,
+  "default-gateway": "10.20.1.1",
+  "default-gateway-v6": "2001:db8:abcd::89",
+  "dns": ["10.20.1.2","10.20.1.3"]
+}
